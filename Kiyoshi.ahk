@@ -19,4 +19,11 @@ RunWT() {
   Return
 }
 
+RunQQ() {
+  If !ProcessExist("QQ.exe") {
+    Run("C:\Program Files (x86)\Tencent\QQ\Bin\QQScLauncher.exe")
+  }
+}
+
 #D::RunWT()
+#Q::RunQQ()
