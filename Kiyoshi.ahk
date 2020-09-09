@@ -12,7 +12,7 @@ RunWT() {
   If WinExist("ahk_exe WindowsTerminal.exe") {
     WinActivate("ahk_exe WindowsTerminal.exe")
   } Else {
-    RunInCurrentPath("wt.exe", "C:\Users\i\workspace")
+    RunInCurrentPath("wt.exe", "C:\Users\Kiyoshi\workspace")
     WinWait("ahk_exe WindowsTerminal.exe")
     WinActivate("ahk_exe WindowsTerminal.exe")
   }
