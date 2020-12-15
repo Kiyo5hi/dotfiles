@@ -3,12 +3,11 @@ $PwshPath = "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\PowerShell"
 $WTPath = "C:\Users\i\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe"
 $PrereqSatisfied = (Test-Path -Path $PwshPath) -and (Test-Path -Path $WTPath)
 
-if (-not $PrereqSatisfied) {
-    Write-Host -Object "You have to pre-install PowerShell Core and Windows Terminal before running this script!" -BackgroundColor Red
-    exit
+if ( $PrereqSatisfied) {
+    throw "You have to pre-install PowerShell Core and Windows Terminal before running this script!"
 }
 
-Write-Host -Object "Prerequisites satisfied, starting..." -BackgroundColor Green
+Write-Host "Prerequisites satisfied, starting..." -BackgroundColor Green
 
 # Get admin privilege
 Start-Process -FilePath "pwsh.exe" -Verb runAs
