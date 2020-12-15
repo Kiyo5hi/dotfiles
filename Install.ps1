@@ -49,17 +49,13 @@ Set-Location -Path $WorkspaceFolder
 git clone "git@github.com:Kiyo5hi/dotfiles.git"
 Set-Location -Path "dotfiles"
 
-# Create Ahk startup shortcut (Path: User/workspace/dotfiles)
-$AhkShortCut = $WshShell.CreateShortcut("$([Environment]::GetFolderPath("Startup"))/Kiyoshi.ahk")
-$AhkShortCut.TargetPath = "$($WorkspaceFolder)dotfiles/Kiyoshi.ahk"
-$AhkShortCut.Save()
+# Create Ahk startup symboliclink (Path: User/workspace/dotfiles)
+New-Item -Path "$([Environment]::GetFolderPath("Startup"))/Kiyoshi.ahk" -ItemType SymbolicLink -Target "$($WorkspaceFolder)dotfiles/Kiyoshi.ahk"
 
-# Create Windows Terminal settings.json shortcut
+# Create Windows Terminal settings.json symboliclink
 $WTSettingsPath = "$WTPath/LocalState/settings.json"
 $TestResult = Test-Path -Path $WTSettingsPath
 if ($TestResult) {
     Remove-Item -Path $WTSettingsPath
 }
-$WTSettingsShortcut = $WshShell.CreateShortcut($WTSettingsPath)
-$WTSettingsShortcut.TargetPath = "$($WorkspaceFolder)dotfiles/settings.json"
-$WTSettingsShortcut.Save()
+New-Item -Path "$WTPath/LocalState/settings.json" -ItemType SymbolicLink -Target "$($WorkspaceFolder)dotfiles/settings.json"
