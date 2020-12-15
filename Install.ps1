@@ -29,15 +29,15 @@ scoop install oraclejdk
 scoop install nodejs-lts
 scoop install FiraCode
 
+# Get dotfiles (Path: User/workspace/dotfiles)
+git clone "git@github.com:Kiyo5hi/dotfiles.git" "$SourceFolder/dotfiles"
+
 # Install AutoHotKey
 $AhkVersion = (Invoke-WebRequest -Uri "https://www.autohotkey.com/download/2.0/version.txt").Content
 $AhkZipPath = Join-Path $KitFolder "ahk.zip"
 Invoke-WebRequest -Uri "https://www.autohotkey.com/download/2.0/AutoHotkey_$AhkVersion.zip" -UseBasicParsing -OutFile $AhkZipPath
 7z.exe x -o"$(Join-Path $KitFolder "AutoHotkey")" $AhkZipPath
 Remove-Item -Path $AhkZipPath
-
-# Get dotfiles (Path: User/workspace/dotfiles)
-git clone "git@github.com:Kiyo5hi/dotfiles.git" "$SourceFolder/dotfiles"
 
 # Create Ahk startup symboliclink (Path: User/workspace/dotfiles)
 New-Item -Path (Join-Path $StartupFolder "Kiyoshi.ahk") -ItemType SymbolicLink -Target (Join-Path $SourceFolder "dotfiles" "Kiyoshi.ahk")
