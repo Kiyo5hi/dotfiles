@@ -1,3 +1,12 @@
+$Confirm = Read-Host -Prompt "Do you have PowerShell Core and Windows Terminal installed? [y/N]"
+
+if ($Confirm -ieq "y") {
+    exit
+}
+
+# Get admin privilege
+Start-Process -FilePath "pwsh.exe" -Verb runAs
+
 # Install scoop
 Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
 scoop install git
@@ -30,6 +39,22 @@ Invoke-WebRequest -Uri "https://www.autohotkey.com/download/2.0/AutoHotkey_$AhkV
 7z.exe x -oAutoHotkey "ahk.zip"
 Remove-Item "ahk.zip"
 
-# Get dotfiles
+# Get dotfiles (Path: User/workspace/dotfiles)
 Set-Location -Path $WorkspaceFolder
 git clone "git@github.com:Kiyo5hi/dotfiles.git"
+Set-Location -Path "dotfiles"
+
+# Create Ahk startup shortcut (Path: User/workspace/dotfiles)
+$AhkShortCut = $WshShell.CreateShortcut("$([Environment]::GetFolderPath("Startup"))/Kiyoshi.ahk")
+$AhkShortCut.TargetPath = "$($WorkspaceFolder)dotfiles/Kiyoshi.ahk"
+$AhkShortCut.Save()
+
+# Create Windows Terminal settings.json shortcut
+$WTSettingsPath = "C:\Users\i\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
+$TestResult = Test-Path -Path $WTSettingsPath
+if ($TestResult) {
+    Remove-Item -Path $WTSettingsPath
+}
+$WTSettingsShortcut = $WshShell.CreateShortcut($WTSettingsPath)
+$WTSettingsShortcut.TargetPath = "$($WorkspaceFolder)dotfiles/settings.json"
+$WTSettingsShortcut.Save()
