@@ -3,7 +3,7 @@ $PwshPath = "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\PowerShell"
 $WTPath = "C:\Users\i\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe"
 $PrereqSatisfied = (Test-Path -Path $PwshPath) -and (Test-Path -Path $WTPath)
 
-if ( $PrereqSatisfied) {
+if (-not $PrereqSatisfied) {
     throw "You have to pre-install PowerShell Core and Windows Terminal before running this script!"
 }
 
