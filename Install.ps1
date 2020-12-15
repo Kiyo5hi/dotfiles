@@ -1,16 +1,15 @@
+#Requires -RunAsAdministrator
+
 # Make sure PowerShell Core and Windows Terminal are pre-installed
-$PwshPath = "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\PowerShell"
-$WTPath = "C:\Users\i\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe"
-$PrereqSatisfied = (Test-Path -Path $PwshPath) -and (Test-Path -Path $WTPath)
-
-if (-not $PrereqSatisfied) {
-    throw "You have to pre-install PowerShell Core and Windows Terminal before running this script!"
-}
-
+(Get-Command wt) -and (Get-Command pwsh)
 Write-Host "Prerequisites satisfied, starting..." -BackgroundColor Green
 
-# Get admin privilege
-Start-Process -FilePath "pwsh.exe" -Verb runAs
+# Create and save needed folders
+$Desktop = [Environment]::GetFolderPath("Desktop")
+$WTFolder = "$HOME\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe"
+$KitFolder = New-Item -Path (Join-Path $Desktop "Kit") -ItemType Directory
+$SourceFolder = New-Item -Path (Join-Path $HOME "Source") -ItemType Directory
+$StartupFolder = $([Environment]::GetFolderPath("Startup"))
 
 # Install scoop
 Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
@@ -30,32 +29,22 @@ scoop install oraclejdk
 scoop install nodejs-lts
 scoop install FiraCode
 
-# Create "User/workspace" Folder
-Set-Location -Path ([Environment]::GetFolderPath("User"))
-$WorkspaceFolder = New-Item -Path "workspace" -ItemType Directory
-
-# Create "Desktop/Kit" folder
-Set-Location -Path ([Environment]::GetFolderPath("Desktop"))
-$KitFolder = New-Item -Path "Kit" -ItemType Directory
-Set-Location $KitFolder
-
-# Install AutoHotKey (Path: Desktop/Kit)
+# Install AutoHotKey
 $AhkVersion = (Invoke-WebRequest -Uri "https://www.autohotkey.com/download/2.0/version.txt").Content
-Invoke-WebRequest -Uri "https://www.autohotkey.com/download/2.0/AutoHotkey_$AhkVersion.zip" -UseBasicParsing -OutFile ahk.zip
-7z.exe x -oAutoHotkey "ahk.zip"
-Remove-Item "ahk.zip"
+$AhkZipPath = Join-Path $KitFolder "ahk.zip"
+Invoke-WebRequest -Uri "https://www.autohotkey.com/download/2.0/AutoHotkey_$AhkVersion.zip" -UseBasicParsing -OutFile $AhkZipPath
+7z.exe x -o"$(Join-Path $KitFolder "AutoHotkey")" $AhkZipPath
+Remove-Item -Path $AhkZipPath
 
 # Get dotfiles (Path: User/workspace/dotfiles)
-Set-Location -Path $WorkspaceFolder
-git clone "git@github.com:Kiyo5hi/dotfiles.git"
-Set-Location -Path "dotfiles"
+git clone "git@github.com:Kiyo5hi/dotfiles.git" "$SourceFolder/dotfiles"
 
 # Create Ahk startup symboliclink (Path: User/workspace/dotfiles)
-New-Item -Path "$([Environment]::GetFolderPath("Startup"))/Kiyoshi.ahk" -ItemType SymbolicLink -Target "$($WorkspaceFolder)dotfiles/Kiyoshi.ahk"
+New-Item -Path (Join-Path $StartupFolder "Kiyoshi.ahk") -ItemType SymbolicLink -Target (Join-Path $SourceFolder "dotfiles" "Kiyoshi.ahk")
 
 # Create Windows Terminal settings.json symboliclink
-$WTSettingsPath = "$WTPath/LocalState/settings.json"
+$WTSettingsFile = "$WTFolder/LocalState/settings.json"
 if (Test-Path -Path $WTSettingsPath) {
     Remove-Item -Path $WTSettingsPath
 }
-New-Item -Path "$WTPath/LocalState/settings.json" -ItemType SymbolicLink -Target "$($WorkspaceFolder)dotfiles/settings.json"
+New-Item -Path $WTSettingsFile -ItemType SymbolicLink -Target (Join-Path $SourceFolder "dotfiles" "settings.json")
