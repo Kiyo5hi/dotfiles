@@ -1,8 +1,14 @@
-$Confirm = Read-Host -Prompt "Do you have PowerShell Core and Windows Terminal installed? [y/N]"
+# Make sure PowerShell Core and Windows Terminal are pre-installed
+$PwshPath = "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\PowerShell"
+$WTPath = "C:\Users\i\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe"
+$PrereqSatisfied = (Test-Path -Path $PwshPath) -and (Test-Path -Path $WTPath)
 
-if ($Confirm -ieq "y") {
+if (-not $PrereqSatisfied) {
+    Write-Host -Object "You have to pre-install PowerShell Core and Windows Terminal before running this script!" -BackgroundColor Red
     exit
 }
+
+Write-Host -Object "Prerequisites satisfied, starting..." -BackgroundColor Green
 
 # Get admin privilege
 Start-Process -FilePath "pwsh.exe" -Verb runAs
@@ -50,7 +56,7 @@ $AhkShortCut.TargetPath = "$($WorkspaceFolder)dotfiles/Kiyoshi.ahk"
 $AhkShortCut.Save()
 
 # Create Windows Terminal settings.json shortcut
-$WTSettingsPath = "C:\Users\i\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
+$WTSettingsPath = "$WTPath/LocalState/settings.json"
 $TestResult = Test-Path -Path $WTSettingsPath
 if ($TestResult) {
     Remove-Item -Path $WTSettingsPath
