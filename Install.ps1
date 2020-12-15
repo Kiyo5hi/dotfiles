@@ -14,8 +14,9 @@ Start-Process -FilePath "pwsh.exe" -Verb runAs
 
 # Install scoop
 Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
-scoop install git
 
+# Git setup
+scoop install git
 git config --global user.name "Kiyo5hi"
 git config --global user.email "i@k1yoshi.com"
 
@@ -54,8 +55,7 @@ New-Item -Path "$([Environment]::GetFolderPath("Startup"))/Kiyoshi.ahk" -ItemTyp
 
 # Create Windows Terminal settings.json symboliclink
 $WTSettingsPath = "$WTPath/LocalState/settings.json"
-$TestResult = Test-Path -Path $WTSettingsPath
-if ($TestResult) {
+if (Test-Path -Path $WTSettingsPath) {
     Remove-Item -Path $WTSettingsPath
 }
 New-Item -Path "$WTPath/LocalState/settings.json" -ItemType SymbolicLink -Target "$($WorkspaceFolder)dotfiles/settings.json"
