@@ -1,15 +1,19 @@
 #Requires -RunAsAdministrator
 
 # Make sure PowerShell Core and Windows Terminal are pre-installed
-(Get-Command wt) -and (Get-Command pwsh) -and (Test-Path Join-Path $HOME ".ssh" "id_rsa")
+(Get-Command wt) -and (Get-Command pwsh)
 Write-Host "Prerequisites satisfied, starting..." -BackgroundColor Green
 
 # Create and save needed folders
 $Desktop = [Environment]::GetFolderPath("Desktop")
-$WTFolder = Get-Item "$HOME\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe"
+$WTFolder = Get-Item (Join-Path "$HOME" "AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe")
 $KitFolder = New-Item -Path (Join-Path $Desktop "Kit") -ItemType Directory
 $SourceFolder = New-Item -Path (Join-Path $HOME "Source") -ItemType Directory
-$StartupFolder = $([Environment]::GetFolderPath("Startup"))
+$StartupFolder = [Environment]::GetFolderPath("Startup")
+$SshFolder = New-Item -Path (Join-Path $HOME ".ssh")
+
+# Configure SSH key
+Copy-Item -Path (Join-Path [Environment]::GetEnvironmentVariable("OneDrive") "Personal/Credentials/id_rsa") -Destination $SshFolder -Force
 
 # Install scoop
 Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
@@ -40,10 +44,10 @@ Invoke-WebRequest -Uri "https://www.autohotkey.com/download/2.0/AutoHotkey_$AhkV
 Remove-Item -Path $AhkZipPath
 
 # Create Ahk startup symboliclink (Path: User/workspace/dotfiles)
-New-Item -Path (Join-Path $StartupFolder "Kiyoshi.ahk") -ItemType SymbolicLink -Target (Join-Path $SourceFolder "dotfiles" "Kiyoshi.ahk")
+New-Item -Path (Join-Path $StartupFolder "Kiyoshi.ahk") -ItemType SymbolicLink -Target (Join-Path $SourceFolder "dotfiles/Kiyoshi.ahk")
 
 # Create Windows Terminal settings.json symboliclink
-$WTSettingsFile = Join-Path $WTFolder "LocalState" "settings.json"
+$WTSettingsFile = Join-Path $WTFolder "LocalState/settings.json"
 if (Test-Path -Path $WTSettingsFile) {
     Remove-Item -Path $WTSettingsFile
 }
