@@ -6,7 +6,7 @@ Write-Host "Prerequisites satisfied, starting..." -BackgroundColor Green
 
 # Create and save needed folders
 $Desktop = [Environment]::GetFolderPath("Desktop")
-$WTFolder = "$HOME\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe"
+$WTFolder = Get-Item "$HOME\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe"
 $KitFolder = New-Item -Path (Join-Path $Desktop "Kit") -ItemType Directory
 $SourceFolder = New-Item -Path (Join-Path $HOME "Source") -ItemType Directory
 $StartupFolder = $([Environment]::GetFolderPath("Startup"))
@@ -43,8 +43,8 @@ Remove-Item -Path $AhkZipPath
 New-Item -Path (Join-Path $StartupFolder "Kiyoshi.ahk") -ItemType SymbolicLink -Target (Join-Path $SourceFolder "dotfiles" "Kiyoshi.ahk")
 
 # Create Windows Terminal settings.json symboliclink
-$WTSettingsFile = "$WTFolder/LocalState/settings.json"
-if (Test-Path -Path $WTSettingsPath) {
-    Remove-Item -Path $WTSettingsPath
+$WTSettingsFile = Join-Path $WTFolder "LocalState" "settings.json"
+if (Test-Path -Path $WTSettingsFile) {
+    Remove-Item -Path $WTSettingsFile
 }
 New-Item -Path $WTSettingsFile -ItemType SymbolicLink -Target (Join-Path $SourceFolder "dotfiles" "settings.json")
