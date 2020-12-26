@@ -1,7 +1,7 @@
 #Requires -RunAsAdministrator
 
 # Make sure PowerShell Core and Windows Terminal are pre-installed
-(Get-Command wt) -and (Get-Command pwsh)
+(Get-Command wt) -and (Get-Command pwsh) -and (Test-Path Join-Path $HOME ".ssh" "id_rsa")
 Write-Host "Prerequisites satisfied, starting..." -BackgroundColor Green
 
 # Create and save needed folders
