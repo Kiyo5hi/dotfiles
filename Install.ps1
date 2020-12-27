@@ -10,7 +10,7 @@ $WTFolder = Get-Item (Join-Path "$HOME" "AppData\Local\Packages\Microsoft.Window
 $KitFolder = New-Item -Path (Join-Path $Desktop "Kit") -ItemType Directory
 $SourceFolder = New-Item -Path (Join-Path $HOME "Source") -ItemType Directory
 $StartupFolder = [Environment]::GetFolderPath("Startup")
-$SshFolder = New-Item -Path (Join-Path $HOME ".ssh")
+$SshFolder = New-Item -Path (Join-Path $HOME ".ssh") -ItemType Directory
 
 # Configure SSH key
 Copy-Item -Path (Join-Path ([Environment]::GetEnvironmentVariable("OneDrive")) "Personal/Credentials/id_rsa") -Destination $SshFolder -Force
