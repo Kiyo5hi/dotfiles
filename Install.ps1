@@ -13,7 +13,7 @@ $StartupFolder = [Environment]::GetFolderPath("Startup")
 $SshFolder = New-Item -Path (Join-Path $HOME ".ssh")
 
 # Configure SSH key
-Copy-Item -Path (Join-Path [Environment]::GetEnvironmentVariable("OneDrive") "Personal/Credentials/id_rsa") -Destination $SshFolder -Force
+Copy-Item -Path (Join-Path ([Environment]::GetEnvironmentVariable("OneDrive")) "Personal/Credentials/id_rsa") -Destination $SshFolder -Force
 
 # Install scoop
 Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
