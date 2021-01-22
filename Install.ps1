@@ -26,12 +26,12 @@ git config --global user.email "i@k1yoshi.com"
 # Add scoop buckets
 scoop bucket add extras
 scoop bucket add java
-scoop bucket add nerd-fonts
 
 # Install scoop packages
 scoop install oraclejdk
 scoop install nodejs-lts
-scoop install FiraCode
+scoop install geekuninstaller
+scoop install tinynvidiaupdatechecker
 
 # Get dotfiles (Path: User/workspace/dotfiles)
 git clone "git@github.com:Kiyo5hi/dotfiles.git" "$SourceFolder/dotfiles"
