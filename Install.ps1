@@ -28,8 +28,6 @@ scoop bucket add extras
 scoop bucket add java
 
 # Install scoop packages
-scoop install oraclejdk
-scoop install nodejs-lts
 scoop install geekuninstaller
 scoop install tinynvidiaupdatechecker
 
@@ -52,3 +50,8 @@ if (Test-Path -Path $WTSettingsFile) {
     Remove-Item -Path $WTSettingsFile
 }
 New-Item -Path $WTSettingsFile -ItemType SymbolicLink -Target (Join-Path $SourceFolder "dotfiles" "settings.json")
+
+Write-Host "System initialized successfully!" -BackgroundColor Green
+Write-Host "Now installing other needed large packages..."
+scoop install nodejs-lts
+scoop install oraclejdk
