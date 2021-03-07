@@ -52,6 +52,6 @@ if (Test-Path -Path $WTSettingsFile) {
 New-Item -Path $WTSettingsFile -ItemType SymbolicLink -Target (Join-Path $SourceFolder "dotfiles" "settings.json")
 
 Write-Host "System initialized successfully!" -BackgroundColor Green
-Write-Host "Now installing other needed large packages..."
-scoop install nodejs-lts
-scoop install oraclejdk
+# Write-Host "Now installing other needed large packages..."
+# scoop install nodejs-lts
+# scoop install oraclejdk
