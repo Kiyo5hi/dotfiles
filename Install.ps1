@@ -21,7 +21,7 @@ Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.
 # Git setup
 scoop install git
 git config --global user.name "Kiyo5hi"
-git config --global user.email "i@k1yoshi.com"
+git config --global user.email "kiyo5hi@riseup.net"
 
 # Add scoop buckets
 scoop bucket add extras
