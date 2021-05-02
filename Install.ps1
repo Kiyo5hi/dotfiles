@@ -35,9 +35,8 @@ scoop install tinynvidiaupdatechecker
 git clone "git@github.com:Kiyo5hi/dotfiles.git" "$SourceFolder/dotfiles"
 
 # Install AutoHotKey
-$AhkVersion = (Invoke-WebRequest -Uri "https://www.autohotkey.com/download/2.0/version.txt").Content
 $AhkZipPath = Join-Path $KitFolder "ahk.zip"
-Invoke-WebRequest -Uri "https://www.autohotkey.com/download/2.0/AutoHotkey_$AhkVersion.zip" -UseBasicParsing -OutFile $AhkZipPath
+Invoke-WebRequest -Uri "https://www.autohotkey.com/download/ahk-v2.zip" -UseBasicParsing -OutFile $AhkZipPath
 7z.exe x -o"$(Join-Path $KitFolder "AutoHotkey")" $AhkZipPath
 Remove-Item -Path $AhkZipPath
 
