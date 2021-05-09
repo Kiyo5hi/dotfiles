@@ -1,7 +1,7 @@
 RunInCurrentPath(App, AlternativePath) {
   RegExMatch(WinGetText("A"), "(?<=[Address: ])[a-zA-Z]:\\[\\\S|*\S]?.*", &M)
   If (M) {
-    Run(App, M.Value())
+    Run(App, M)
   } Else {
     Run(App, AlternativePath)
   }
