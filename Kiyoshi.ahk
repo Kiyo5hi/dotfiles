@@ -26,25 +26,5 @@ RunQQ() {
   Return
 }
 
-RunIDEA() {
-  If !ProcessExist("idea64.exe") {
-    Run("idea64.exe")
-  } Else {
-    WinActivate("ahk_exe idea64.exe")
-  }
-  Return
-}
-
-RunPyCharm() {
-    If !ProcessExist("pycharm64.exe") {
-    Run("pycharm64.exe")
-  } Else {
-    WinActivate("ahk_exe pycharm64.exe")
-  }
-  Return
-}
-
 #D::RunWT()
 #Q::RunQQ()
-#J::RunIDEA()
-#P::RunPyCharm()
